@@ -44,13 +44,13 @@
 			self.imageValues = {};
 			self.blocks = {};
 
-			for(var i = 0; i < 1000; i ++) {
+			for(var i = 0; i < Math.sqrt((mediocris.width * mediocris.height), 16) + 100; i ++) {
 
-				self.blocks[i] = {};
+				self.blocks[i] = [];
 
 			}
 
-			for(var i = 0, c = 0; i < 100000; i += 4, c++) {
+			for(var i = 0, c = 0; i < self.imageData['data'].length; i += 4, c++) {
 
 				var	y = Math.floor(c / mediocris.width),
 					x = (c - (mediocris.width * y)) + 1;
@@ -66,11 +66,11 @@
 
 				}
 
-				self.blocks[self.deriveBlock(pixel['x'], pixel['y'] - 1)][x+' '+(y + 1)] = pixel;
+				self.blocks[self.deriveBlock(pixel['x'], pixel['y'] - 1)].push(pixel);
 
 			}
 
-			// self.blockCompare(1000);
+			self.blockCompare(self.blocks[80]);
 
 		}
 
@@ -86,33 +86,31 @@
 		self.blockCompare = function(block) {
 
 			var lowest = 100000,
-				pixel = {};
+				dominant;
 
-			for(var i = 0; i < n; i++) {
+			for(var i = 0; i < block.length; i++) {
 
-				var	y = Math.floor(i / mediocris.width),
-					x = (i - (mediocris.width * y)) + 1;
+				var pixel = block[i];
 
-				for (var c = 0; c < n; c++) {
+				for (var c = 0; c < block.length; c++) {
 
-					var	yD = Math.floor(c / mediocris.width),
-						xD = (c - (mediocris.width * yD)) + 1;
+					var compare = block[c];
 
-					if(self.imageValues[x+' '+(y + 1)] === self.imageValues[xD+' '+(yD + 1)]) continue;
-					if(self.imageValues[x+' '+(y + 1)]['x'] > self.imageValues[xD+' '+(yD + 1)]['x']) continue;
+					if(pixel === compare) continue;
+					if(pixel['x'] > compare['x']) continue;
 
-					if(self.eDetlta(self.imageValues[x+' '+(y + 1)]['lab'], self.imageValues[xD+' '+(yD + 1)]['lab']) < lowest) {
+					if(self.eDetlta(pixel['lab'], compare['lab']) < lowest) {
 
-						lowest = self.eDetlta(self.imageValues[x+' '+(y + 1)]['lab'], self.imageValues[xD+' '+(yD + 1)]['lab']);
-						pixel = self.imageValues[x+' '+(y + 1)];
+						lowest = self.eDetlta(pixel['lab'], compare['lab']);
+						dominant = pixel;
 
-					};
+					}
 
 				}
 
 			}
 
-			document.body.style.background = pixel['hex'];
+			document.body.style.background = dominant['hex'];
 
 		}
 
