@@ -40,17 +40,21 @@
 
 		self.getImageData = function() {
 
+			var intensity = Math.round((mediocris.width / 30) / 4) * 4;
+
+			console.log(intensity, intensity / 4);
+
 			self.imageData = context.getImageData(0, 0, mediocris.width, mediocris.height);
 			self.imageValues = {};
 			self.blocks = {};
 
-			for(var i = 0; i < Math.sqrt((mediocris.width * mediocris.height), 16) + 100; i ++) {
+			for(var i = 0; i < 10000; i ++) {
 
 				self.blocks[i] = [];
 
 			}
 
-			for(var i = 0, c = 0; i < self.imageData['data'].length; i += 4, c++) {
+			for(var i = 0, c = 0; i < self.imageData['data'].length; i += intensity, c+=(intensity / 4)) {
 
 				var	y = Math.floor(c / mediocris.width),
 					x = (c - (mediocris.width * y)) + 1;
@@ -70,7 +74,7 @@
 
 			}
 
-			self.blockCompare(self.blocks[80]);
+			self.blockCompare(self.blocks[1]);
 
 		}
 
@@ -110,7 +114,7 @@
 
 			}
 
-			document.body.style.background = dominant['hex'];
+			document.body.style.background = 'rgb('+dominant['rgb'][0]+', '+dominant['rgb'][1]+', '+dominant['rgb'][2]+')';
 
 		}
 
