@@ -44,7 +44,7 @@
 			self.imageValues = {};
 			self.blocks = {};
 
-			for(var i = 0; i < (mediocris.width * mediocris.height) / 16; i ++) {
+			for(var i = 0; i < 1000; i ++) {
 
 				self.blocks[i] = {};
 
@@ -66,11 +66,9 @@
 
 				}
 
-				self.blocks[self.deriveBlock(pixel['x'], pixel['y'])][x+' '+(y + 1)] = pixel;
+				self.blocks[self.deriveBlock(pixel['x'], pixel['y'] - 1)][x+' '+(y + 1)] = pixel;
 
 			}
-
-			console.log(self.blocks[2]);
 
 			// self.blockCompare(1000);
 
@@ -78,11 +76,14 @@
 
 		self.deriveBlock = function(x, y) {
 
-			return Math.max((Math.ceil(y / 16) * 16), (Math.ceil(x / 16) * 16)) / 16;
+			var xCell = Math.ceil(x /16);
+			var yCell = Math.floor(y /16);
+
+			return ((Math.ceil(mediocris.width / 16) * yCell) + xCell);
 
 		}
 
-		self.blockCompare = function(n) {
+		self.blockCompare = function(block) {
 
 			var lowest = 100000,
 				pixel = {};
