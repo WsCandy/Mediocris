@@ -52,9 +52,44 @@
 
 					rgb: [self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]],
 					alpha : self.imageData['data'][i+3],
-					hex : '#' + self.imageData['data'][i].toString(16) + self.imageData['data'][i+1].toString(16) + self.imageData['data'][i+2].toString(16)
+					hex : '#' + self.imageData['data'][i].toString(16) + self.imageData['data'][i+1].toString(16) + self.imageData['data'][i+2].toString(16),
+					xyz : self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2])
 
 				}
+
+			}
+
+			console.log(self.imageValues['1 1']);
+
+		}
+
+		self.toXYZ = function(r, g, b) {
+
+			r = (r / 255);
+			g = (g / 255);
+			b = (b / 255);
+
+			r = self.XYZpivot(r);
+			g = self.XYZpivot(g);
+			b = self.XYZpivot(b);
+
+			var x = r * 0.4124 + g * 0.3576 + b * 0.1805,
+				y = r * 0.2126 + g * 0.7152 + b * 0.0722,
+				z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+
+			return [x, y, z];
+
+		}
+
+		self.XYZpivot = function(n) {
+
+			if(n > 0.04045) {
+
+				return Math.pow(((n + 0.055) / 1.055), 2.4) * 100;
+
+			} else {
+
+				return (n / 12.92) * 100;
 
 			}
 
