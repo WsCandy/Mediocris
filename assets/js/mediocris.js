@@ -65,13 +65,9 @@
 
 		self.toXYZ = function(r, g, b) {
 
-			r = (r / 255);
-			g = (g / 255);
-			b = (b / 255);
-
-			r = self.XYZpivot(r);
-			g = self.XYZpivot(g);
-			b = self.XYZpivot(b);
+			r = self.XYZpivot(r / 255);
+			g = self.XYZpivot(g / 255);
+			b = self.XYZpivot(b /255);
 
 			var x = r * 0.4124 + g * 0.3576 + b * 0.1805,
 				y = r * 0.2126 + g * 0.7152 + b * 0.0722,
@@ -83,15 +79,7 @@
 
 		self.XYZpivot = function(n) {
 
-			if(n > 0.04045) {
-
-				return Math.pow(((n + 0.055) / 1.055), 2.4) * 100;
-
-			} else {
-
-				return (n / 12.92) * 100;
-
-			}
+			return (n > 0.04045 ? Math.pow(((n + 0.055) / 1.055), 2.4) : n / 12.92) * 100;
 
 		}
 
