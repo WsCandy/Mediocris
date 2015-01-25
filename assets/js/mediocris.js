@@ -7,7 +7,8 @@
 		var self = this,
 			mediocris,
 			context,
-			mImage = new Image();
+			mImage = new Image(),
+			dominant = [];
 		
 		mImage.src = src;
 
@@ -22,7 +23,6 @@
 			mediocris = document.getElementById('mediocris');
 			context = canvas.getContext('2d');
 		
-
 			mImage.onload = self.imageDraw;
 
 		}
@@ -72,7 +72,13 @@
 
 			}
 
-			self.blockCompare(self.blocks[5]);
+			for (var i = 1; i < 101; i++) {
+
+				self.blockCompare(self.blocks[i], (i - 1));
+				
+			}
+
+			self.blockCompare(dominant, 'final');
 
 		}
 
@@ -88,10 +94,10 @@
 
 		}
 
-		self.blockCompare = function(block) {
+		self.blockCompare = function(block, index) {
 
 			var lowest = 100000,
-				dominant;
+				blockDom;
 
 			for(var i = 0; i < block.length; i++) {
 
@@ -107,7 +113,7 @@
 					if(self.eDetlta(pixel['lab'], compare['lab']) < lowest) {
 
 						lowest = self.eDetlta(pixel['lab'], compare['lab']);
-						dominant = pixel;
+						blockDom = pixel;
 
 					}
 
@@ -115,7 +121,17 @@
 
 			}
 
-			document.body.style.background = 'rgb('+dominant['rgb'][0]+', '+dominant['rgb'][1]+', '+dominant['rgb'][2]+')';
+			if(index == 'final') {
+
+				document.body.style.background = 'rgb('+blockDom['rgb'][0]+', '+blockDom['rgb'][1]+', '+blockDom['rgb'][2]+')';
+
+				mediocris.parentNode.removeChild(mediocris);
+
+			} else {
+
+				dominant[index] = blockDom;
+				
+			}
 
 		}
 
@@ -171,7 +187,8 @@
 
 	}
 
-	var mediocris = new imageCanvas('assets/images/sample-image2.jpg');
+	var mediImg = document.getElementById('medi'),
+		mediocris = new imageCanvas(mediImg.getAttribute('src'));
 		mediocris.createCanvas();
 
 })();
