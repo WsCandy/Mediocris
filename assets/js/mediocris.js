@@ -59,8 +59,8 @@
 
 			}
 
-			console.log(self.imageValues['1 1']);
-			console.log(self.imageValues['200 100']);
+
+			console.log(self.eDetlta(self.imageValues['1 1']['lab'], self.imageValues['2 1']['lab']));
 
 		}
 
@@ -105,6 +105,12 @@
 		self.LABpivot = function(n) {
 
 			return (n > 0.008856 ? Math.pow(n, (1/3)) : 7.787 * n + (16/116));
+
+		}
+
+		self.eDetlta = function(a, b) {
+
+			return Math.sqrt(Math.pow((a[0] - b[0]), 2) + Math.pow((a[1] - b[1]), 2) + Math.pow((a[2] - b[2]), 2));
 
 		}
 
