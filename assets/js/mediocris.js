@@ -51,15 +51,16 @@
 				self.imageValues[x+' '+(y + 1)] = {
 
 					rgb: [self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]],
-					alpha : self.imageData['data'][i+3],
 					hex : '#' + self.imageData['data'][i].toString(16) + self.imageData['data'][i+1].toString(16) + self.imageData['data'][i+2].toString(16),
-					xyz : self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2])
+					xyz : self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]),
+					lab : self.toLAB(self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]))
 
 				}
 
 			}
 
 			console.log(self.imageValues['1 1']);
+			console.log(self.imageValues['200 100']);
 
 		}
 
@@ -80,6 +81,30 @@
 		self.XYZpivot = function(n) {
 
 			return (n > 0.04045 ? Math.pow(((n + 0.055) / 1.055), 2.4) : n / 12.92) * 100;
+
+		}
+
+		self.toLAB = function(xyz) {
+
+			var x = xyz[0] / 95.047,
+				y = xyz[1] / 100.000,
+				z = xyz[2] / 108.883;
+
+			x = self.LABpivot(x);
+			y = self.LABpivot(y);
+			z = self.LABpivot(z);
+
+			var cieL = (116 * y) - 16,
+				cieA = 500 * (x - y),
+				cieB = 200 * (y - z);
+
+			return [cieL, cieA, cieB];
+
+		}
+
+		self.LABpivot = function(n) {
+
+			return (n > 0.008856 ? Math.pow(n, (1/3)) : 7.787 * n + (16/116));
 
 		}
 
