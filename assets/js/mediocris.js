@@ -40,15 +40,13 @@
 
 		self.getImageData = function() {
 
-			var intensity = Math.round((mediocris.width / 30) / 4) * 4;
-
-			console.log(intensity, intensity / 4);
+			var intensity = Math.round((mediocris.width / 10) / 4) * 4;
 
 			self.imageData = context.getImageData(0, 0, mediocris.width, mediocris.height);
 			self.imageValues = {};
 			self.blocks = {};
 
-			for(var i = 0; i < 10000; i ++) {
+			for(var i = 1; i < 101; i ++) {
 
 				self.blocks[i] = [];
 
@@ -70,20 +68,23 @@
 
 				}
 
-				self.blocks[self.deriveBlock(pixel['x'], pixel['y'] - 1)].push(pixel);
+				self.blocks[self.deriveBlock(pixel['x'], pixel['y'])].push(pixel);
 
 			}
 
-			self.blockCompare(self.blocks[1]);
+			self.blockCompare(self.blocks[5]);
 
 		}
 
 		self.deriveBlock = function(x, y) {
 
-			var xCell = Math.ceil(x /16);
-			var yCell = Math.floor(y /16);
+			var height = Math.ceil(mediocris.height / 10),
+				width = Math.ceil(mediocris.width / 10);
 
-			return ((Math.ceil(mediocris.width / 16) * yCell) + xCell);
+			var xCell = Math.ceil(x / width),
+				yCell = Math.ceil(y / height);
+
+			return ((yCell * 10) - 10) + xCell;
 
 		}
 
@@ -170,7 +171,7 @@
 
 	}
 
-	var mediocris = new imageCanvas('assets/images/sample-image1.jpg');
+	var mediocris = new imageCanvas('assets/images/sample-image2.jpg');
 		mediocris.createCanvas();
 
 })();
