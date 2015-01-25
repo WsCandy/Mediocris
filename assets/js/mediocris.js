@@ -42,25 +42,76 @@
 
 			self.imageData = context.getImageData(0, 0, mediocris.width, mediocris.height);
 			self.imageValues = {};
+			self.blocks = {};
 
-			for(var i = 0, c = 0; i < self.imageData['data'].length; i +=4, c++) {
+			for(var i = 0; i < (mediocris.width * mediocris.height) / 16; i ++) {
+
+				self.blocks[i] = {};
+
+			}
+
+			for(var i = 0, c = 0; i < 100000; i += 4, c++) {
 
 				var	y = Math.floor(c / mediocris.width),
 					x = (c - (mediocris.width * y)) + 1;
 
-				self.imageValues[x+' '+(y + 1)] = {
+				var pixel = self.imageValues[x+' '+(y + 1)] = {
 
 					rgb: [self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]],
 					hex : '#' + self.imageData['data'][i].toString(16) + self.imageData['data'][i+1].toString(16) + self.imageData['data'][i+2].toString(16),
 					xyz : self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]),
-					lab : self.toLAB(self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]))
+					lab : self.toLAB(self.toXYZ(self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2])),
+					x : x,
+					y: (y + 1)
+
+				}
+
+				self.blocks[self.deriveBlock(pixel['x'], pixel['y'])][x+' '+(y + 1)] = pixel;
+
+			}
+
+			console.log(self.blocks[2]);
+
+			// self.blockCompare(1000);
+
+		}
+
+		self.deriveBlock = function(x, y) {
+
+			return Math.max((Math.ceil(y / 16) * 16), (Math.ceil(x / 16) * 16)) / 16;
+
+		}
+
+		self.blockCompare = function(n) {
+
+			var lowest = 100000,
+				pixel = {};
+
+			for(var i = 0; i < n; i++) {
+
+				var	y = Math.floor(i / mediocris.width),
+					x = (i - (mediocris.width * y)) + 1;
+
+				for (var c = 0; c < n; c++) {
+
+					var	yD = Math.floor(c / mediocris.width),
+						xD = (c - (mediocris.width * yD)) + 1;
+
+					if(self.imageValues[x+' '+(y + 1)] === self.imageValues[xD+' '+(yD + 1)]) continue;
+					if(self.imageValues[x+' '+(y + 1)]['x'] > self.imageValues[xD+' '+(yD + 1)]['x']) continue;
+
+					if(self.eDetlta(self.imageValues[x+' '+(y + 1)]['lab'], self.imageValues[xD+' '+(yD + 1)]['lab']) < lowest) {
+
+						lowest = self.eDetlta(self.imageValues[x+' '+(y + 1)]['lab'], self.imageValues[xD+' '+(yD + 1)]['lab']);
+						pixel = self.imageValues[x+' '+(y + 1)];
+
+					};
 
 				}
 
 			}
 
-
-			console.log(self.eDetlta(self.imageValues['1 1']['lab'], self.imageValues['2 1']['lab']));
+			document.body.style.background = pixel['hex'];
 
 		}
 
