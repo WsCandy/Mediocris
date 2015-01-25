@@ -40,13 +40,21 @@
 
 		self.getImageData = function() {
 
-			self.imageData = context.getImageData(0, 0, mediocris.height, mediocris.width);
+			self.imageData = context.getImageData(0, 0, mediocris.width, mediocris.height);
+			self.imageValues = {};
 
-			for(var i = 0; i < self.imageData['data'].length; i +=4) {
+			for(var i = 0, c = 0; i < self.imageData['data'].length; i +=4, c++) {
 
-				var r = self.imageData['data'][i],
-					g = self.imageData['data'][i+1],
-					b = self.imageData['data'][i+2];
+				var	y = Math.floor(c / mediocris.width),
+					x = (c - (mediocris.width * y)) + 1;
+
+				self.imageValues[x+' '+(y + 1)] = {
+
+					rgb: [self.imageData['data'][i], self.imageData['data'][i+1], self.imageData['data'][i+2]],
+					alpha : self.imageData['data'][i+3],
+					hex : '#' + self.imageData['data'][i].toString(16) + self.imageData['data'][i+1].toString(16) + self.imageData['data'][i+2].toString(16)
+
+				}
 
 			}
 
