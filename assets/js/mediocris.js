@@ -45,7 +45,7 @@
 
 		self.getImageData = function() {
 
-			var accuracy = Math.round((mediocris.width / 19) / 4) * 4;
+			var accuracy = Math.round((mediocris.width / 10) / 4) * 4;
 
 			self.imageData = context.getImageData(0, 0, mediocris.width, mediocris.height);
 			self.imageValues = {};
@@ -98,26 +98,35 @@
 
 		self.blockCompare = function(block, index) {
 
-			var lowest = 100000,
-				blockDom;
+			var	blockDom,
+				highest = 0;
 
 			for(var i = 0; i < block.length; i++) {
 
 				var pixel = block[i];
+					pixel['count'] = 0;
 
 				for (var c = 0; c < block.length; c++) {
 
 					var compare = block[c];
 
 					if(pixel === compare) continue;
-					if(pixel['x'] > compare['x']) continue;
+					if(i < c) continue;
 
-					if(self.eDetlta(pixel['lab'], compare['lab']) < lowest && self.eDetlta(pixel['lab'], compare['lab']) > 0.69) {
 
-						lowest = self.eDetlta(pixel['lab'], compare['lab']);
-						blockDom = pixel;
+					if(self.eDetlta(pixel['lab'], compare['lab']) <= 14) {
+
+						pixel['count'] +=1;
 
 					}
+
+
+				}
+
+				if(pixel['count'] > highest) {
+
+					highest = pixel['count'];
+					blockDom = pixel;
 
 				}
 
@@ -155,9 +164,9 @@
 			g = self.XYZpivot(g / 255);
 			b = self.XYZpivot(b /255);
 
-			var x = r * 0.4124 + g * 0.3576 + b * 0.1805,
-				y = r * 0.2126 + g * 0.7152 + b * 0.0722,
-				z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+			var x = (r * 0.4124) + (g * 0.3576) + (b * 0.1805),
+				y = (r * 0.2126) + (g * 0.7152) + (b * 0.0722),
+				z = (r * 0.0193) + (g * 0.1192) + (b * 0.9505);
 
 			return [x, y, z];
 
