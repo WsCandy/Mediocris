@@ -8,7 +8,9 @@
 			mediocris,
 			context,
 			mImage = new Image(),
-			dominant = [];
+			dominant = [],
+			height,
+			width;
 		
 		mImage.src = src;
 
@@ -32,6 +34,9 @@
 			mediocris.height = mImage.height;
 			mediocris.width = mImage.width;
 
+			height = Math.ceil(mediocris.height / 10),
+			width = Math.ceil(mediocris.width / 10);
+
 			context.drawImage(mImage, 0, 0);
 
 			self.getImageData();
@@ -40,7 +45,7 @@
 
 		self.getImageData = function() {
 
-			var intensity = Math.round((mediocris.width / 10) / 4) * 4;
+			var accuracy = Math.round((mediocris.width / 19) / 4) * 4;
 
 			self.imageData = context.getImageData(0, 0, mediocris.width, mediocris.height);
 			self.imageValues = {};
@@ -52,7 +57,7 @@
 
 			}
 
-			for(var i = 0, c = 0; i < self.imageData['data'].length; i += intensity, c+=(intensity / 4)) {
+			for(var i = 0, c = 0; i < self.imageData['data'].length; i += accuracy, c+=(accuracy / 4)) {
 
 				var	y = Math.floor(c / mediocris.width),
 					x = (c - (mediocris.width * y)) + 1;
@@ -83,9 +88,6 @@
 		}
 
 		self.deriveBlock = function(x, y) {
-
-			var height = Math.ceil(mediocris.height / 10),
-				width = Math.ceil(mediocris.width / 10);
 
 			var xCell = Math.ceil(x / width),
 				yCell = Math.ceil(y / height);

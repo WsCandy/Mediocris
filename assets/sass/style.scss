@@ -6,3 +6,22 @@
 	-moz-box-sizing: border-box;
 
 }
+
+#image_cont {
+
+	float: left;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+
+	-webkit-transform: translateX(-50%) translateY(-50%);
+
+}
+
+#medi {
+
+	display: block;
+	margin: 0 auto;
+	float: left;
+
+}
