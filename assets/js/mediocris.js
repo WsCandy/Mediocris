@@ -112,7 +112,7 @@
 					if(pixel === compare) continue;
 					if(pixel['x'] > compare['x']) continue;
 
-					if(self.eDetlta(pixel['lab'], compare['lab']) < lowest) {
+					if(self.eDetlta(pixel['lab'], compare['lab']) < lowest && self.eDetlta(pixel['lab'], compare['lab']) > 0.69) {
 
 						lowest = self.eDetlta(pixel['lab'], compare['lab']);
 						blockDom = pixel;
@@ -130,6 +130,18 @@
 				mediocris.parentNode.removeChild(mediocris);
 
 			} else {
+
+				var block = document.createElement('div');
+					block.style.background = 'rgb('+blockDom['rgb'][0]+', '+blockDom['rgb'][1]+', '+blockDom['rgb'][2]+')';
+					block.style.width = '10%';
+					block.style.float = 'left';
+					block.style.height = '10%';
+
+				var container = document.getElementById('blocks');
+					container.style.height = document.getElementById('medi').height;
+					container.style.width = document.getElementById('medi').width;
+
+				container.appendChild(block);
 
 				dominant[index] = blockDom;
 				
