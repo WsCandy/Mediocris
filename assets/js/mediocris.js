@@ -34,8 +34,8 @@
 			mediocris.height = mImage.height;
 			mediocris.width = mImage.width;
 
-			height = Math.ceil(mediocris.height / 10),
-			width = Math.ceil(mediocris.width / 10);
+			height = Math.ceil(mediocris.height / 20),
+			width = Math.ceil(mediocris.width / 20);
 
 			context.drawImage(mImage, 0, 0);
 
@@ -51,7 +51,7 @@
 			self.imageValues = {};
 			self.blocks = {};
 
-			for(var i = 1; i < 101; i ++) {
+			for(var i = 1; i < 401; i ++) {
 
 				self.blocks[i] = [];
 
@@ -77,7 +77,7 @@
 
 			}
 
-			for (var i = 1; i < 101; i++) {
+			for (var i = 1; i < 401; i++) {
 
 				self.blockCompare(self.blocks[i], (i - 1));
 				
@@ -92,7 +92,7 @@
 			var xCell = Math.ceil(x / width),
 				yCell = Math.ceil(y / height);
 
-			return ((yCell * 10) - 10) + xCell;
+			return ((yCell * 20) - 20) + xCell;
 
 		}
 
@@ -120,7 +120,6 @@
 
 					}
 
-
 				}
 
 				if(pixel['count'] > highest) {
@@ -135,22 +134,23 @@
 			if(index == 'final') {
 
 				document.body.style.background = 'rgb('+blockDom['rgb'][0]+', '+blockDom['rgb'][1]+', '+blockDom['rgb'][2]+')';
-
 				mediocris.parentNode.removeChild(mediocris);
 
 			} else {
 
-				var block = document.createElement('div');
-					block.style.background = 'rgb('+blockDom['rgb'][0]+', '+blockDom['rgb'][1]+', '+blockDom['rgb'][2]+')';
-					block.style.width = '10%';
-					block.style.float = 'left';
-					block.style.height = '10%';
+				if(!blockDom) return;
 
-				var container = document.getElementById('blocks');
-					container.style.height = document.getElementById('medi').height;
-					container.style.width = document.getElementById('medi').width;
+				// var block = document.createElement('div');
+				// 	block.style.background = 'rgb('+blockDom['rgb'][0]+', '+blockDom['rgb'][1]+', '+blockDom['rgb'][2]+')';
+				// 	block.style.width = '5%';
+				// 	block.style.float = 'left';
+				// 	block.style.height = '5%';
 
-				container.appendChild(block);
+				// var container = document.getElementById('blocks');
+				// 	container.style.height = document.getElementById('medi').height;
+				// 	container.style.width = document.getElementById('medi').width;
+
+				// container.appendChild(block);
 
 				dominant[index] = blockDom;
 				
